@@ -8,21 +8,21 @@ def format_dropdown_labels(val):
 
 # Define page settings
 st.beta_set_page_config(
-    page_title='LIME explainer app',
+    page_title='LIME Explainer App',
     # layout="wide"
 )
 
 # Build app
-title_text = 'Interactive LIME Explainer For Census Datasets'
+title_text = 'Interactive LIME Explainer'
 
 st.markdown(f"<h2 style='text-align: center;'><b>{title_text}</b></h2>", unsafe_allow_html=True)
-st.markdown(f"<h5 style='text-align: center;'>{subheader_text}</h5>", unsafe_allow_html=True)
-st.text("")
 
+st.text("")
+input_text = st.text_input('Enter your text:', "")
 n_samples = st.text_input('Number of samples to generate for LIME explainer: (For really long input text, go up to 5000)', value=1000)
 method_list = tuple(label for label, val in METHODS.items())
 method = st.selectbox(
-    'Choose Dataset (original or synthetic):',
+    'Choose Dataset:',
     method_list,
     index=4,
     format_func=format_dropdown_labels,
