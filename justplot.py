@@ -27,23 +27,23 @@ def load_data():
     df['Sex'] = le.fit_transform(df['Sex'])
     df = df.drop(["Education", "Workclass", "Marital_status", "Race", "Native_country", "Relationship", "Occupation"], axis=1)
 
-    X = df.drop(['Income'], axis=1)
-
-    s = MinMaxScaler()
-    X[X.columns] = s.fit_transform(X[X.columns])
-
-    y = df['Income']
-    return X,y
+    return df
     #return shap.datasets.boston()
 
 def st_shap(plot, height=None):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     components.html(shap_html, height=height)
 
+    
+df = load_data()
+X = df.drop(['Income'], axis=1)
+s = MinMaxScaler()
+X[X.columns] = s.fit_transform(X[X.columns])
+y = df['Income']
+
 st.title("SHAP in Streamlit")
 
 # train  model
-##X,y = load_data()
 ##model = xgboost.train({"learning_rate": 0.01}, xgboost.DMatrix(X, label=y), 100)
 X_train, X_test, y_train, y_test  = train_test_split(X, y, test_size=0.33, random_state=2022)
 clf = MLPClassifier(max_iter=100, random_state=2022)
