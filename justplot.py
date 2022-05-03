@@ -71,6 +71,6 @@ lime_explainer = lime_tabular.LimeTabularExplainer(training_data = X,
                                                   feature_names = X.columns)
 lime_explaination = lime_explainer.expalin_instance(data_row = X.iloc[2], 
                                                     predict_fn = model.predict_proba,
-                                                    num_features = len(X.columns)
-                                                    num_samples = 4
+                                                    num_features = len(X.columns),
+                                                    num_samples = 4)
 components.html(lime_explaination.as_html())
