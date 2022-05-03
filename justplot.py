@@ -58,7 +58,7 @@ shap_values = shap_explainer.shap_values(X_test.iloc[0:20,:])
 
 # visualize the first prediction's explanation (use matplotlib=True to avoid Javascript)
 ##st_shap(shap.force_plot(shap_explainer.expected_value, shap_values[0,:], X.iloc[0,:]))
-st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:20,:])
+st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:20,:]))
 
 # visualize the training set predictions
 ##st_shap(shap.force_plot(shap_explainer.expected_value, shap_values, X), 400)
