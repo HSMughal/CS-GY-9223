@@ -29,9 +29,9 @@ def load_data():
     return df
     #return shap.datasets.boston()
 
-def st_shap(plot):
+def st_shap(plot, height=800, width = 800, scrolling = True):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
-    components.html(shap_html)
+    components.html(shap_html, height = height, scrolling = True)
 
     
 df = load_data()
