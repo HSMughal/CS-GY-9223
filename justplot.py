@@ -41,7 +41,9 @@ s = MinMaxScaler()
 X[X.columns] = s.fit_transform(X[X.columns])
 y = df['Income']
 
-st.title("SHAP in Streamlit")
+st.title("SHAP  & LIME in Analyzer")
+st.subtitle = '''Hafeeza Mughal'''
+
 
 # train  model
 ##model = xgboost.train({"learning_rate": 0.01}, xgboost.DMatrix(X, label=y), 100)
@@ -53,22 +55,22 @@ clf.fit(X_train, y_train)
 # (same syntax works for LightGBM, CatBoost, scikit-learn and spark models)
 ##shap_explainer = shap.TreeExplainer(model)
 ##shap_values = shap_explainer.shap_values(X)
-shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
-shap_values = shap_explainer.shap_values(X_test.iloc[0:20,:])
+###shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
+###shap_values = shap_explainer.shap_values(X_test.iloc[0:20,:])
 
 # visualize the first prediction's explanation (use matplotlib=True to avoid Javascript)
 ##st_shap(shap.force_plot(shap_explainer.expected_value, shap_values[0,:], X.iloc[0,:]))
-st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:20,:]))
+###st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:20,:]))
 
 # visualize the training set predictions
 ##st_shap(shap.force_plot(shap_explainer.expected_value, shap_values, X), 400)
 
 
 #model predictions with lime
-#lime_explainer = lime_tabular.LimeTabularExplainer(training_data = X, 
-#                                                  feature_names = X.columns)
-#lime_explaination = lime_explainer.expalin_instance(data_row = X.iloc[2], 
-#                                                     predict_fn = model.predict_proba,
-#                                                     num_features = len(X.columns)
-#                                                     num_samples = 4
-# components.html(lime_explainer.as_html(), height=height)
+lime_explainer = lime_tabular.LimeTabularExplainer(training_data = X, 
+                                                  feature_names = X.columns)
+lime_explaination = lime_explainer.expalin_instance(data_row = X.iloc[2], 
+                                                    predict_fn = model.predict_proba,
+                                                    num_features = len(X.columns)
+                                                    num_samples = 4
+components.html(lime_explaination.as_html())
