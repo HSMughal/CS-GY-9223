@@ -31,7 +31,7 @@ def load_data():
 
 def st_shap(plot, height=800, width = 800, scrolling = True):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
-    components.html(shap_html, height = height, scrolling = True)
+    components.html(shap_html, width = width, height = height, scrolling = True)
 
     
 df = load_data()
@@ -54,18 +54,14 @@ clf.fit(X_train, y_train)
 # (same syntax works for LightGBM, CatBoost, scikit-learn and spark models)
 ##shap_explainer = shap.TreeExplainer(model)
 ##shap_values = shap_explainer.shap_values(X)
-###shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
-###shap_values = shap_explainer.shap_values(X_test.iloc[0:20,:])
+shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
+shap_values = shap_explainer.shap_values(X_test.iloc[0:20,:])
 
 # visualize the first prediction's explanation (use matplotlib=True to avoid Javascript)
 ##st_shap(shap.force_plot(shap_explainer.expected_value, shap_values[0,:], X.iloc[0,:]))
-###st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:20,:]))
+st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:20,:]))
 
-# visualize the training set predictions
-##st_shap(shap.force_plot(shap_explainer.expected_value, shap_values, X), 400)
-
-
-#model predictions with lime
+#explain and visualize with LIME
 lime_explainer = lime_tabular.LimeTabularExplainer(training_data = np.array(X_train),
                                               feature_names = X_train.columns,
                                               class_names = ['0','1'],
