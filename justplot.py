@@ -1,5 +1,5 @@
-import numpy
-import pandas 
+import pandas as pd
+import numpy as np
 
 import shap
 import streamlit as st
