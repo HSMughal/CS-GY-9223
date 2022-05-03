@@ -6,9 +6,9 @@ import streamlit as st
 import streamlit.components.v1 as components
 import xgboost
 
-# import lime
-# from lime import lime_tabular
-# from lime_explainer import explainer
+import lime
+from lime import lime_tabular
+from lime_explainer import explainer
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
