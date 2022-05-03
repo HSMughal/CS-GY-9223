@@ -8,3 +8,4 @@ matplotlib
 seaborn
 xgboost
 lime==0.2.0.1
+lime_explainer
