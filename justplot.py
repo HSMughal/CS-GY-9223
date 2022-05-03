@@ -29,7 +29,7 @@ def load_data():
     return df
     #return shap.datasets.boston()
 
-def st_shap(plot, height=800, width = 800, scrolling = True):
+def st_shap(plot, height=800, width = 1600, scrolling = True):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     components.html(shap_html, width = width, height = height, scrolling = True)
 
@@ -50,17 +50,6 @@ X_train, X_test, y_train, y_test  = train_test_split(X, y, test_size=0.33, rando
 clf = MLPClassifier(max_iter=100, random_state=2022)
 clf.fit(X_train, y_train)
 
-# explain the model's predictions using SHAP
-# (same syntax works for LightGBM, CatBoost, scikit-learn and spark models)
-##shap_explainer = shap.TreeExplainer(model)
-##shap_values = shap_explainer.shap_values(X)
-shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
-shap_values = shap_explainer.shap_values(X_test.iloc[0:20,:])
-
-# visualize the first prediction's explanation (use matplotlib=True to avoid Javascript)
-##st_shap(shap.force_plot(shap_explainer.expected_value, shap_values[0,:], X.iloc[0,:]))
-st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:20,:]))
-
 #explain and visualize with LIME
 lime_explainer = lime_tabular.LimeTabularExplainer(training_data = np.array(X_train),
                                               feature_names = X_train.columns,
@@ -70,6 +59,14 @@ lime_explainer = lime_tabular.LimeTabularExplainer(training_data = np.array(X_tr
 lime_explanation = lime_explainer.explain_instance(data_row = X_test.iloc[2],
                                          predict_fn = clf.predict_proba, 
                                          num_features = 3, 
-                                         num_samples = 20)
+                                         num_samples = 5)
 
 components.html(lime_explanation.as_html(), width = 800, height = 800, scrolling = True)
+
+
+# explain the model's predictions using SHAP
+shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
+shap_values = shap_explainer.shap_values(X_test.iloc[0:5,:])
+
+# visualize predictions explanation
+st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:5,:]))
