@@ -76,4 +76,4 @@ lime_explanation = lime_explainer.explain_instance(data_row = X_test.iloc[2],
                                          num_features = 3, 
                                          num_samples = 20)
 
-components.html(lime_explanation.as_html(), height = 800, weight = 800, scrolling = True)
+components.v1.html(lime_explanation.as_html(), width = 800, height = 800, scrolling = True)
