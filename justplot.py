@@ -29,7 +29,7 @@ def load_data():
     return df
     #return shap.datasets.boston()
 
-def st_shap(plot, height=400, width = 400, scrolling = True):
+def st_shap(plot, height=800, width = 900, scrolling = True):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     components.html(shap_html, width = width, height = height, scrolling = True)
 
