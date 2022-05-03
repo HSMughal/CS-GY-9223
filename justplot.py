@@ -66,10 +66,14 @@ clf.fit(X_train, y_train)
 
 
 #model predictions with lime
-lime_explainer = lime_tabular.LimeTabularExplainer(training_data = X, 
-                                                  feature_names = X.columns)
-lime_explaination = lime_explainer.expalin_instance(data_row = X.iloc[2], 
-                                                    predict_fn = model.predict_proba,
-                                                    num_features = len(X.columns),
-                                                    num_samples = 4)
+lime_explainer = lime_tabular.LimeTabularExplainer(training_data = np.array(X_train),
+                                              feature_names = X_train.columns,
+                                              class_names = ['0','1'],
+                                              mode = 'classification')
+
+lime_explanation = lime_explainer.explain_instance(data_row = X_test.iloc[2],
+                                         predict_fn = clf.predict_proba, 
+                                         num_features = 3, 
+                                         num_samples = 20)
+
 components.html(lime_explaination.as_html())
