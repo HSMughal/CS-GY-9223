@@ -29,7 +29,7 @@ def load_data():
     return df
     #return shap.datasets.boston()
 
-def st_shap(plot, height=800, width = 1600, scrolling = True):
+def st_shap(plot, height=400, width = 400, scrolling = True):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     components.html(shap_html, width = width, height = height, scrolling = True)
 
@@ -41,7 +41,7 @@ X[X.columns] = s.fit_transform(X[X.columns])
 y = df['Income']
 
 st.title("SHAP  & LIME in Analyzer")
-st.subtitle = '''Hafeeza Mughal'''
+st.subheader("Hafeeza Mughal")
 
 
 # train  model
