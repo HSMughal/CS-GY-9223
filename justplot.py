@@ -76,5 +76,6 @@ with st.spinner('Producing SHAP graphics...'):
     shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
     shap_values = shap_explainer.shap_values(X_test.iloc[0:5,:])
     
+st.set_option('deprecation.showPyplotGlobalUse', False)     #suppress warning from streamlit on pyplot use
 st.pyplot(shap.summary_plot(shap_values, X_test, plot_type="bar"))
 st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:5,:]))
