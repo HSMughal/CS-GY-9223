@@ -33,9 +33,14 @@ def st_shap(plot, height=800, width = 900, scrolling = True):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     components.html(shap_html, width = width, height = height, scrolling = True)
 
-#set app display
-st.title("SHAP  & LIME in Analyzer")
-st.subheader("Hafeeza Mughal")
+#setup app display
+title_text = ("SHAP  & LIME in Analyzer")
+subheader_text =("Hafeeza Mughal")
+st.markdown(f"<h2 style='text-align: center;'><b>{title_text}</b></h2>", unsafe_allow_html=True)
+st.markdown(f"<h5 style='text-align: center;'>{subheader_text}</h5>", unsafe_allow_html=True)
+st.text("")
+
+#choose dataset and begina analysis
 data_selection = st.selectbox(
     'Choose dataset to analyze',
     ('Census','Wine','Real-World'))
