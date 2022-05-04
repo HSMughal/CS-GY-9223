@@ -34,6 +34,8 @@ def st_shap(plot, height=800, width = 900, scrolling = True):
     components.html(shap_html, width = width, height = height, scrolling = True)
 
 #set app display
+st.title("SHAP  & LIME in Analyzer")
+st.subheader("Hafeeza Mughal")
 data_selection = st.selectbox(
     'Choose dataset to analyze',
     ('Census','Wine','Real-World'))
@@ -47,10 +49,6 @@ X = df.drop(['Income'], axis=1)
 s = MinMaxScaler()
 X[X.columns] = s.fit_transform(X[X.columns])
 y = df['Income']
-
-st.title("SHAP  & LIME in Analyzer")
-st.subheader("Hafeeza Mughal")
-
 
 # train  model
 ##model = xgboost.train({"learning_rate": 0.01}, xgboost.DMatrix(X, label=y), 100)
