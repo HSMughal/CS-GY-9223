@@ -33,8 +33,18 @@ def st_shap(plot, height=800, width = 900, scrolling = True):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     components.html(shap_html, width = width, height = height, scrolling = True)
 
-    
-df = load_data()
+#set app display
+data_selection = st.selectbox(
+    'Choose dataset:',
+    ['Census','Wine','Real-World'],
+    index=2,
+    format_func=format_dropdown_labels,
+)
+
+if st.button("Explain Results"):
+    with st.spinner('Calculating...'):
+        df = load_data()
+        
 X = df.drop(['Income'], axis=1)
 s = MinMaxScaler()
 X[X.columns] = s.fit_transform(X[X.columns])
