@@ -61,21 +61,20 @@ clf = MLPClassifier(max_iter=100, random_state=2022)
 clf.fit(X_train, y_train)
 
 #explain and visualize with LIME
-lime_explainer = lime_tabular.LimeTabularExplainer(training_data = np.array(X_train),
+with st.spinner('Producing SHAP graphics...'):
+    lime_explainer = lime_tabular.LimeTabularExplainer(training_data = np.array(X_train),
                                               feature_names = X_train.columns,
                                               class_names = ['0','1'],
                                               mode = 'classification')
-
-lime_explanation = lime_explainer.explain_instance(data_row = X_test.iloc[2],
+    lime_explanation = lime_explainer.explain_instance(data_row = X_test.iloc[2],
                                          predict_fn = clf.predict_proba, 
                                          num_features = 3, 
                                          num_samples = 5)
-
-components.html(lime_explanation.as_html(), width = 800, height = 800, scrolling = True)
-
-# explain the model's predictions using SHAP
-shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
-shap_values = shap_explainer.shap_values(X_test.iloc[0:5,:])
-
+    components.html(lime_explanation.as_html(), width = 800, height = 800, scrolling = True)
+    
+    # explain the model's predictions using SHAP
+    shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
+    shap_values = shap_explainer.shap_values(X_test.iloc[0:5,:])
+    
 st.pyplot(shap.summary_plot(shap_values, X_test, plot_type="bar"))
 st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:5,:]))
