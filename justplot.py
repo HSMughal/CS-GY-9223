@@ -73,10 +73,9 @@ lime_explanation = lime_explainer.explain_instance(data_row = X_test.iloc[2],
 
 components.html(lime_explanation.as_html(), width = 800, height = 800, scrolling = True)
 
-
 # explain the model's predictions using SHAP
 shap_explainer = shap.KernelExplainer(clf.predict_proba,X_train)
 shap_values = shap_explainer.shap_values(X_test.iloc[0:5,:])
 
-# visualize predictions explanation
+st.pyplot(shap.summary_plot(shap_values, X_test, plot_type="bar"))
 st_shap(shap.force_plot(shap_explainer.expected_value[0],shap_values[0], X_test.iloc[0:5,:]))
