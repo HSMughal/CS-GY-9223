@@ -35,11 +35,9 @@ def st_shap(plot, height=800, width = 900, scrolling = True):
 
 #set app display
 data_selection = st.selectbox(
-    'Choose dataset:',
-    ['Census','Wine','Real-World'],
-    index=2,
-    format_func=format_dropdown_labels,
-)
+    'Choose dataset to analyze',
+    ('Census','Wine','Real-World'))
+st.write('You selected:',data_selection)
 
 if st.button("Explain Results"):
     with st.spinner('Calculating...'):
