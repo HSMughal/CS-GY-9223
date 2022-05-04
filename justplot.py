@@ -17,17 +17,21 @@ from sklearn.neural_network import MLPClassifier
 ##############################################################################
 
 @st.cache
-def load_data():
-    df = pd.read_csv("https://raw.githubusercontent.com/dsrscientist/dataset1/master/census_income.csv")
-    df.drop(df[df['Native_country'] == ' ?'].index,inplace=True)
-    df.drop(df[df['Occupation'] == ' ?'].index,inplace=True)
-    le = LabelEncoder() # label encoder 
-    df['Income'] = le.fit_transform(df['Income'])
-    df['Sex'] = le.fit_transform(df['Sex'])
-    df = df.drop(["Education", "Workclass", "Marital_status", "Race", "Native_country", "Relationship", "Occupation"], axis=1)
-
-    return df
-    #return shap.datasets.boston()
+def load_data(data_selection):
+    if(data_selection=='Census'):
+        df = pd.read_csv("https://raw.githubusercontent.com/dsrscientist/dataset1/master/census_income.csv")
+        df.drop(df[df['Native_country'] == ' ?'].index,inplace=True)
+        df.drop(df[df['Occupation'] == ' ?'].index,inplace=True)
+        le = LabelEncoder() # label encoder 
+        df['Income'] = le.fit_transform(df['Income'])
+        df['Sex'] = le.fit_transform(df['Sex'])
+        df = df.drop(["Education", "Workclass", "Marital_status", "Race", "Native_country", "Relationship", "Occupation"], axis=1)
+        X = df.drop(['Income'], axis=1)
+        s = MinMaxScaler()
+        X[X.columns] = s.fit_transform(X[X.columns])
+        y = df['Income']
+        return [X,y]
+    
 
 def st_shap(plot, height=800, width = 900, scrolling = True):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
@@ -40,23 +44,18 @@ st.markdown(f"<h2 style='text-align: center;'><b>{title_text}</b></h2>", unsafe_
 st.markdown(f"<h5 style='text-align: center;'>{subheader_text}</h5>", unsafe_allow_html=True)
 st.text("")
 
-#choose dataset and begina analysis
+#choose dataset and begin analysis
 data_selection = st.selectbox(
     'Choose dataset to analyze',
     ('Census','Wine','Real-World'))
 st.write('You selected:',data_selection)
 
-if st.button("Explain Results"):
-    with st.spinner('Calculating...'):
-        df = load_data()
+with st.spinner('Calculating...'):
+    df = load_data(data_selection)
         
-X = df.drop(['Income'], axis=1)
-s = MinMaxScaler()
-X[X.columns] = s.fit_transform(X[X.columns])
-y = df['Income']
-
 # train  model
-##model = xgboost.train({"learning_rate": 0.01}, xgboost.DMatrix(X, label=y), 100)
+X = df[0]
+y = df[1]
 X_train, X_test, y_train, y_test  = train_test_split(X, y, test_size=0.33, random_state=2022)
 clf = MLPClassifier(max_iter=100, random_state=2022)
 clf.fit(X_train, y_train)
