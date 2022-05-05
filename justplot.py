@@ -50,15 +50,15 @@ data_selection = st.selectbox(
     ('Census','Wine','Real-World'))
 st.write('You selected:',data_selection)
 
-with st.spinner('Calculating...'):
-    df = load_data(data_selection)
+df = load_data(data_selection)
         
 # train  model
-X = df[0]
-y = df[1]
-X_train, X_test, y_train, y_test  = train_test_split(X, y, test_size=0.33, random_state=2022)
-clf = MLPClassifier(max_iter=100, random_state=2022)
-clf.fit(X_train, y_train)
+with st.spinner('Producing LIME graphics...'):
+    X = df[0]
+    y = df[1]
+    X_train, X_test, y_train, y_test  = train_test_split(X, y, test_size=0.33, random_state=2022)
+    clf = MLPClassifier(max_iter=100, random_state=2022)
+    clf.fit(X_train, y_train)
 
 #explain and visualize with LIME
 with st.spinner('Producing SHAP graphics...'):
